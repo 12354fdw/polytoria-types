@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc",
+    "build": "tsup generator/index.ts --format esm --out-dir dist",
     "lint": "eslint src/**/*.ts",
     "format": "prettier --write src/**/*.ts",
-    "dev": "npx ts-node generator/index.ts"
+    "dev": "tsup generator/index.ts --watch --onSuccess \"node dist/index.js\""
   },
   "keywords": [],
   "author": "",
@@ -20,6 +20,7 @@
     "eslint": "^10.4.1",
     "prettier": "^3.8.3",
     "ts-node": "^10.9.2",
+    "tsup": "^8.5.1",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.60.1"
   },

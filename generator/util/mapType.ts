@@ -7,8 +7,23 @@ const TYPE_MAP: Record<string, ts.TypeNode> = {
 };
 
 export function mapType(type: string): ts.TypeNode {
+	type = type.trim();
+
+	// its all using a void callback ;-;
+	if (type === "() -> ()") {
+		return ts.factory.createTypeReferenceNode("() => void", undefined);
+	}
+
+	// arrays: {T}
+	if (type.startsWith("{") && type.endsWith("}")) {
+		const inner = type.slice(1, -1).trim();
+		return ts.factory.createArrayTypeNode(mapType(inner));
+	}
+
+	// primitives
 	const mapped = TYPE_MAP[type];
 	if (mapped) return mapped;
 
-	return ts.factory.createTypeReferenceNode(type);
+	// fallback
+	return ts.factory.createTypeReferenceNode(type, undefined);
 }

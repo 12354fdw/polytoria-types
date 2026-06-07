@@ -2,6 +2,7 @@ import ts from "typescript";
 import { createHeritageClause } from "../../util/createHeritageClause";
 import { createProperty } from "./createProperty";
 import { createMethod } from "./createMethod";
+import { appendClassJSDoc } from "../../util/JSDocs/JSDocCommentExtended";
 
 export function createClass(details: ApiClass): ts.ClassDeclaration {
 	const heritage = details.BaseType
@@ -13,7 +14,7 @@ export function createClass(details: ApiClass): ts.ClassDeclaration {
 		...details.Methods.map((m) => createMethod(m)),
 	];
 
-	return ts.factory.createClassDeclaration(
+	const classDeclaration = ts.factory.createClassDeclaration(
 		[
 			ts.factory.createModifier(ts.SyntaxKind.ExportKeyword),
 			ts.factory.createModifier(ts.SyntaxKind.DeclareKeyword),
@@ -23,4 +24,8 @@ export function createClass(details: ApiClass): ts.ClassDeclaration {
 		heritage,
 		members,
 	);
+
+	appendClassJSDoc(classDeclaration, details);
+
+	return classDeclaration;
 }

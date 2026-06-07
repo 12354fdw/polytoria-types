@@ -1,16 +1,20 @@
 import ts from "typescript";
 import { createParameter } from "./createParameter";
 import { mapType } from "../../util/mapType";
+import { appendMethodJSDoc } from "../../util/JSDocs/JSDocCommentExtended";
 
-export function createMethod(method: ApiMethod) {
-	return ts.factory.createMethodDeclaration(
+export function createMethod(details: ApiMethod) {
+	const method = ts.factory.createMethodDeclaration(
 		undefined,
 		undefined,
-		method.Name,
+		details.Name,
 		undefined,
 		undefined,
-		method.Parameters.map((p) => createParameter(p)),
-		mapType(method.ReturnType),
+		details.Parameters.map((p) => createParameter(p)),
+		mapType(details.ReturnType),
 		undefined,
 	);
+
+	appendMethodJSDoc(method, details);
+	return method;
 }

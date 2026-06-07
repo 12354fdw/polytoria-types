@@ -6,7 +6,8 @@
         "strict": true,
         "esModuleInterop": true,
         "outDir": "dist",
-        "rootDir": "generator"
+        "rootDir": "generator",
+		"types": ["node"]
     },
     "include": ["generator"],
 }
